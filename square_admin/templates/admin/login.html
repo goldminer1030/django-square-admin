@@ -1,0 +1,90 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static square_admin_template_tags %}
+{% block extrastyle %}{% endblock %}
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block sidebar_menu %}{% endblock %}
+
+{% block authentication %}
+  <form action="{{ app_path }}" method="post" id="login-form" class="form" role="form">{% csrf_token %}
+    <div class="header">
+      <div class="logo-container expandUp">
+        <img src="{% static "square_admin/img/logo.svg" %}" alt="{{ site_header|default:_('Django administration') }}">
+      </div>
+      <h5>Log in</h5>
+    </div>
+    <div class="content">
+
+      {% if user.is_authenticated %}
+        <div role="alert" class="alert alert-warning">
+          {% blocktrans trimmed %}
+            You are authenticated as {{ username }}, but are not authorized to
+            access this page. Would you like to login to a different account?
+          {% endblocktrans %}
+        </div>
+      {% endif %}
+
+      {% if form.errors or form.non_field_errors %}
+        <div role="alert" class="alert alert-danger errornote">
+          {% if form.errors and not form.non_field_errors %}
+            <p>
+              <strong>
+                {% blocktrans count form.errors.items|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+              </strong>
+            </p>
+          {% endif %}
+
+          {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+              <p>
+                {{ error }}
+              </p>
+            {% endfor %}
+          {% endif %}
+
+          {% if form.errors %}
+            {% for field in form %}
+              {% for error in field.errors %}
+                <p class="border-decoration">
+                  <strong><span class="glyphicon glyphicon-asterisk"></span> {{ field.label }}: </strong>{{ error|escape }}
+                </p>
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
+      <div class="input-group input-lg">
+        {{ form.username.errors }}
+        {{ form.username|add_class:'form-control'|placeholder:form.username.label }}
+        <span class="input-group-addon">
+                              <i class="zmdi zmdi-account-circle"></i>
+                          </span>
+      </div>
+      <div class="input-group input-lg">
+        {{ form.password.errors }}
+        {{ form.password|add_class:'form-control'|placeholder:form.password.label }}
+        <span class="input-group-addon"><i class="zmdi zmdi-lock"></i></span>
+      </div>
+    </div>
+
+    <input type="hidden" name="next" value="{{ next }}" />
+
+    <div class="footer">
+      <input type="submit" class="btn btn-primary btn-round btn-lg btn-block " value="{% trans 'Log in' %}">
+
+      {% url 'admin_password_reset' as password_reset_url %}
+      {% if password_reset_url %}
+        <h5><a href="{{ password_reset_url }}" class="link">{% trans 'Forgotten your password or username?' %}</a></h5>
+      {% endif %}
+    </div>
+  </form>
+{% endblock %}
+{% block js %}
+  <script src="{% static 'admin/js/pages/authentication/page.js' %}"></script>
+{% endblock js %}

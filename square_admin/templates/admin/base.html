@@ -3,7 +3,7 @@
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
 <title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
+{#<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">#}
 {% block extrastyle %}{% endblock %}
 {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
 {% block extrahead %}{% endblock %}
@@ -12,82 +12,114 @@
     <link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive.css" %}">
     {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
 {% endblock %}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/bootstrap.min.css' %}" />
+
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/main.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/color_skins.css' %}" />
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
 </head>
 {% load i18n %}
 
-<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+<body class="theme-cyan {% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
   data-admin-utc-offset="{% now "Z" %}">
 
 <!-- Container -->
 <div id="container">
 
+  {% if has_permission %}
     {% if not is_popup %}
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-        {% block branding %}{% endblock %}
+
+      <nav class="navbar">
+        <ul class="nav navbar-nav navbar-left">
+          <li>
+            <div class="navbar-header">
+              <a href="javascript:void(0);" class="bars"></a>
+              <a class="navbar-brand" href="{% url 'admin:index' %}">
+                <img src="{% static "square_admin/img/logo-white.svg" %}" width="30" alt="{{ site_header|default:_('Django administration') }}">
+                <span class="m-l-10">{{ site_header|default:_('Django administration') }}</span></a>
+            </div>
+          </li>
+          <li class="float-right">
+            <a href="javascript:void(0);" class="fullscreen hidden-md-down hidden-sm-down" data-provide="fullscreen"><i class="zmdi zmdi-fullscreen"></i></a>
+            <a href="javascript:void(0);" class="js-right-chat"><i class="zmdi zmdi-comments"></i></a>
+            <a href="javascript:void(0);" class="js-right-sidebar"><i class="zmdi zmdi-settings"></i></a>
+            <a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-sort-amount-desc"></i></a>
+            <a href="{% url 'admin:logout' %}" class="mega-menu" title="{% trans 'Log out' %}"><i class="zmdi zmdi-power"></i></a>
+          </li>
+        </ul>
+      </nav>
+
+      <aside id="leftsidebar" class="sidebar">
+        <div class="menu">
+          <ul class="list">
+            <li>
+              <div class="user-info m-b-20">
+                <div class="image"><a href="#"><img src="{% static "square_admin/img/profile_av.jpg" %}" alt="User"></a></div>
+                <div class="detail">
+                  <h4>{% firstof user.get_short_name user.get_username %}</h4>
+                  {% if user.has_usable_password %}
+                    <a href="{% url 'admin:password_change' %}" title="{% trans 'Change password' %}"><i class="zmdi zmdi-lock"></i> {% trans 'Change password' %}</a>
+                  {% endif %}
+                </div>
+            </li>
+            {% block sidebar %}{% endblock %}
+          </ul>
         </div>
-        {% block usertools %}
-        {% if has_permission %}
-        <div id="user-tools">
-            {% block welcome-msg %}
-                {% trans 'Welcome,' %}
-                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
-            {% endblock %}
-            {% block userlinks %}
-                {% if site_url %}
-                    <a href="{{ site_url }}">{% trans 'View site' %}</a> /
-                {% endif %}
-                {% if user.is_active and user.is_staff %}
-                    {% url 'django-admindocs-docroot' as docsroot %}
-                    {% if docsroot %}
-                        <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
-                    {% endif %}
-                {% endif %}
-                {% if user.has_usable_password %}
-                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
-                {% endif %}
-                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
-            {% endblock %}
+      </aside>
+
+      <section class="content home">
+        <div class="block-header">
+          <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+              {% block pretitle %}{% endblock %}
+              {% block content_title %}{% if title %}<h2>{{ title }}</h2>{% endif %}{% endblock %}
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+              <ul class="breadcrumb float-md-right">
+                {% block breadcrumbs %}
+                  <li class="breadcrumb-item">
+                    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+                    {% if title %} &rsaquo; {{ title }}{% endif %}
+                  </li>
+                {% endblock %}
+              </ul>
+            </div>
+          </div>
         </div>
-        {% endif %}
-        {% endblock %}
-        {% block nav-global %}{% endblock %}
-    </div>
-    <!-- END Header -->
-    {% block breadcrumbs %}
-    <div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-    {% if title %} &rsaquo; {{ title }}{% endif %}
-    </div>
-    {% endblock %}
+        <div class="container-fluid">
+          {% block messages %}
+            {% if messages %}
+            <ul class="messagelist">{% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+            {% endfor %}</ul>
+            {% endif %}
+          {% endblock messages %}
+
+          <div id="content" class="{% block coltype %}colM{% endblock %}">
+            {% block content %}
+            {% block object-tools %}{% endblock %}
+            {{ content }}
+            {% endblock %}
+            <br class="clear">
+          </div>
+        </div>
+      </section>
     {% endif %}
 
-    {% block messages %}
-        {% if messages %}
-        <ul class="messagelist">{% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}</ul>
-        {% endif %}
-    {% endblock messages %}
-
-    <!-- Content -->
-    <div id="content" class="{% block coltype %}colM{% endblock %}">
-        {% block pretitle %}{% endblock %}
-        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
-        {% block content %}
-        {% block object-tools %}{% endblock %}
-        {{ content }}
-        {% endblock %}
-        {% block sidebar %}{% endblock %}
-        <br class="clear">
-    </div>
-    <!-- END Content -->
-
     {% block footer %}<div id="footer"></div>{% endblock %}
+
+  {% else %}
+    <div class="authentication sidebar-collapse">
+    <div class="page-header">
+      <div class="container">
+        <div class="col-md-12 content-center">
+          <div class="card-plain">
+            {% block authentication %}{% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  {% endif %}
 </div>
 <!-- END Container -->
-
-</body>
-</html>
