@@ -9,12 +9,12 @@
 {% block extrahead %}{% endblock %}
 {% block responsive %}
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive.css" %}">
     {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
 {% endblock %}
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/bootstrap.min.css' %}" />
 
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/main.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/custom.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/color_skins.css' %}" />
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
 </head>
@@ -22,7 +22,14 @@
 
 <body class="theme-cyan {% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
   data-admin-utc-offset="{% now "Z" %}">
-
+<div class="page-loader-wrapper">
+  <div class="loader">
+    <div class="m-t-30">
+      <img class="zmdi-hc-spin" src="{% static "square_admin/img/logo.svg" %}" width="48" height="48" alt="logo">
+    </div>
+    <p>Please wait...</p>
+  </div>
+</div>
 <!-- Container -->
 <div id="container">
 
@@ -89,9 +96,9 @@
         <div class="container-fluid">
           {% block messages %}
             {% if messages %}
-            <ul class="messagelist">{% for message in messages %}
-              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-            {% endfor %}</ul>
+            {% for message in messages %}
+              <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message|capfirst }}</div>
+            {% endfor %}
             {% endif %}
           {% endblock messages %}
 
@@ -123,3 +130,9 @@
   {% endif %}
 </div>
 <!-- END Container -->
+<script type="text/javascript" src="{% static "admin/bundles/libscripts.bundle.js" %}"></script>
+<script type="text/javascript" src="{% static "admin/bundles/vendorscripts.bundle.js" %}"></script>
+
+<script type="text/javascript" src="{% static "admin/bundles/mainscripts.bundle.js" %}"></script>
+</body>
+</html>

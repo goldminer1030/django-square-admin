@@ -1,0 +1,163 @@
+@-webkit-keyframes autofill {
+  to {
+    color: #ffffff;
+    background: transparent;
+  }
+
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-animation-name: autofill;
+  -webkit-animation-fill-mode: both;
+}
+
+.navbar .navbar-nav .navbar-header {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.theme-cyan .help,
+.theme-cyan .errornote,
+.theme-cyan label {
+  color: #9E9E9E;
+}
+.form-row {
+    border-bottom: none;
+}
+.selector-chosen h2,
+.selector .selector-available h2 {
+    font-size: 1.714em;
+    color: #9E9E9E;
+    background: #373f46;
+}
+.selector-available h2, .selector-chosen h2 {
+    font-size: 1.714em;
+    color: #9E9E9E;
+    border: none;
+}
+.selector select,
+.selector .selector-filter {
+    background: transparent;
+    border: 1px solid #535e69;
+}
+.selector select option {
+    font-size: 14px;
+    color: #9E9E9E;
+}
+.aligned .form-row input,
+.selector .selector-available input {
+    background-color: transparent;
+    border: 1px solid #535e69;
+    border-radius: 30px;
+    color: #DDDDDD;
+    font-size: 16px;
+    padding-left: 10px;
+    -webkit-transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    -moz-transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    -o-transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    -ms-transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.errors {
+    position: relative;
+}
+.errors .errorlist {
+    position: absolute;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    color: #f96332;
+}
+.actions span {
+    color: #9E9E9E;
+}
+select[name="action"] {
+    border-radius: 30px;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #9e9e9e;
+}
+.action-checkbox input[type="checkbox"],
+.action-checkbox-column input[type="checkbox"] {
+    width: 26px;
+    height: 26px;
+}
+.search #searchbar {
+    border-right: none;
+}
+.search button[type="submit"] {
+    border-left: none;
+}
+.submit-row {
+    background: transparent;
+    border: none;
+}
+.bootstrap-select .dropdown-toggle {
+    display: none;
+}
+#changelist-filter {
+    list-style: none;
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: stretch;
+}
+#changelist-filter .card {
+    min-width: 200px;
+    max-width: 300px;
+    margin: 5px;
+}
+#changelist-filter .card h3 {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+.navbar-header .bars {
+    line-height: 10px;
+}
+
+@media only screen and (max-width: 866px) {
+    .related-widget-wrapper .selector {
+        width: 100%;
+        float: none;
+    }
+    .related-widget-wrapper .selector-available,
+    .related-widget-wrapper .selector-chosen {
+        float: none;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    .related-widget-wrapper .selector select {
+        width: 100%;
+    }
+    .related-widget-wrapper .selector ul.selector-chooser {
+        float: none;
+        width: 46px;
+        margin: auto;
+        display: inherit;
+    }
+    .related-widget-wrapper .selector-chooser li {
+        display: inline-block;
+    }
+    .related-widget-wrapper .selector ul.selector-chooser {
+        float: none;
+        width: 46px;
+    }
+}
