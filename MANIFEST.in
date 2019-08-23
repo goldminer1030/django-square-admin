@@ -1,0 +1,5 @@
+include README.rst
+include LICENSE
+recursive-include square_admin *
+recursive-include square_admin/static *
+recursive-include square_admin/templates *
