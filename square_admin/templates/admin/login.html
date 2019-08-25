@@ -12,6 +12,7 @@
 {% block sidebar_menu %}{% endblock %}
 
 {% block authentication %}
+  <div class="card-plain">
   <form action="{{ app_path }}" method="post" id="login-form" class="form" role="form">{% csrf_token %}
     <div class="header">
       <div class="logo-container expandUp">
@@ -84,6 +85,7 @@
       {% endif %}
     </div>
   </form>
+  </div>
 {% endblock %}
 {% block js %}
   <script src="{% static 'admin/js/pages/authentication/page.js' %}"></script>
